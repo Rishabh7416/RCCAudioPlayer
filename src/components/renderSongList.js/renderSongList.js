@@ -1,6 +1,6 @@
-import {Animated, Image} from 'react-native';
-import React, {forwardRef} from 'react';
 import {styles} from '../styles';
+import React, {forwardRef} from 'react';
+import {Animated, Image} from 'react-native';
 
 const RenderSongList = forwardRef(({songLists}, ref) => {
   const renderSongsDetails = ({item}) => {
@@ -13,20 +13,21 @@ const RenderSongList = forwardRef(({songLists}, ref) => {
 
   return (
     <Animated.FlatList
+      ref={ref}
       horizontal
       pagingEnabled
-      ref={ref}
       data={songLists}
       keyExtractor={item => item.id}
       renderItem={renderSongsDetails}
+      decelerationRate={0}
+      snapToInterval={380 + 10}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{justifyContent: 'center'}}
-      onScroll={Animated.event(
-        [{nativeEvent: {contentOffset: {x: ref}}}],
-        {useNativeDriver: true},
-      )}
+      onScroll={Animated.event([{nativeEvent: {contentOffset: {x: ref}}}], {
+        useNativeDriver: true,
+      })}
     />
   );
 });
 
-export default RenderSongList;
+export default React.memo(RenderSongList);

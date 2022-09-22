@@ -14,22 +14,19 @@ import {
   playBackStateToggling,
   skipToNextPreviousTrack,
 } from '../constants/trackPlayerFunctions';
-import RenderSongList from './renderSongList.js/renderSongList';
 import {
   View,
   Text,
+  Image,
   Animated,
   Dimensions,
-  Image,
   TouchableOpacity,
 } from 'react-native';
-import Slider from '@react-native-community/slider';
+import RenderSongList from './renderSongList.js/renderSongList';
+import {SliderComp} from './slider/slider';
+import {StyleSheet} from 'react-native';
 
 const {height, width} = Dimensions.get('screen');
-
-TrackPlayer.updateOptions({
-  stoppingAppPausesPlayback: true,
-});
 
 const RCTrackPlayer = ({
   songLists,
@@ -38,25 +35,26 @@ const RCTrackPlayer = ({
   pauseButtonIcon,
   skipToPreviousIcon,
 }) => {
+  console.log('component rendering');
   const progress = useProgress();
   const playBackState = usePlaybackState();
   const scrollToPreviousNext = React.useRef(null);
   const [songIndex, setSongIndex] = React.useState(0);
   const scrollRef = React.useRef(new Animated.Value(0)).current;
 
-  const [repeatTracks, setRepeatTracks] = React.useState();
-
-  const handleRepeatMode = () => {
-    if(RepeatMode.Off) setRepeatTracks(RepeatMode.Track)
-    else if(RepeatMode.Track) setRepeatTracks(RepeatMode.Queue)
-    else setRepeatTracks(RepeatMode.Off)
-  };
-
-  const scrollNext = React.useCallback(() => {
+  const scrollNext = () => {
     scrollRef.current.scrollToOffset({
       offset: (songIndex + 1) * width,
     });
-  }, [songIndex]);
+    // if (Math.round(progress.position) > 5) {
+    //   TrackPlayer.reset()
+    // }
+    // else {
+    //   scrollRef.current.scrollToOffset({
+    //     offset: (songIndex + 1) * width,
+    //   });
+    // }
+  };
 
   const scrollPrevious = React.useCallback(() => {
     scrollRef.current.scrollToOffset({
@@ -65,17 +63,14 @@ const RCTrackPlayer = ({
   }, [songIndex]);
 
   React.useLayoutEffect(() => {
+    trackPlayerSetup(songLists);
+
     scrollRef.addListener(({value}) => {
       const index = Math.round(value / width);
       skipToNextPreviousTrack(index);
       setSongIndex(index);
     });
-
     return () => scrollRef.removeAllListeners();
-  }, []);
-
-  React.useEffect(() => {
-    trackPlayerSetup(songLists);
   }, []);
 
   return (
@@ -83,17 +78,16 @@ const RCTrackPlayer = ({
       <RenderSongList songLists={songLists} ref={scrollRef} />
       <Text>{songLists[songIndex]?.title}</Text>
       <Text>{songLists[songIndex]?.artist}</Text>
-      <Slider
+      <SliderComp
         step={1}
         minimumValue={0}
         value={progress.position}
-        maximumValue={progress.duration}
         maximumTrackTintColor="grey"
         minimumTrackTintColor="aqua"
-        thumbImage={''}
+        maximumValue={progress.duration}
         onSlidingComplete={value => seekToTrack(value)}
       />
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View style={stylesA.titleContainer}>
         <Text style={{fontSize: 12}}>
           {formatTime(progress.position, true)}
         </Text>
@@ -102,14 +96,6 @@ const RCTrackPlayer = ({
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleRepeatMode}>
-          <Image
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/512/70/70196.png',
-            }}
-            style={{height: 20, width: 20}}
-          />
-        </TouchableOpacity>
         <Icon
           icon={skipToPreviousIcon}
           onPress={() => scrollPrevious()}
@@ -121,9 +107,7 @@ const RCTrackPlayer = ({
           iconStyle={styles.playButtonIconStyle}
           containerStyle={{alignItems: 'center'}}
           icon={
-            playBackState === State.Paused || playBackState === State.Ready
-              ? playButtonIcon
-              : pauseButtonIcon
+            playBackState !== State.Playing ? playButtonIcon : pauseButtonIcon
           }
         />
         <Icon
@@ -132,13 +116,16 @@ const RCTrackPlayer = ({
           iconStyle={styles.skipToNextIconStyle}
           containerStyle={{alignItems: 'center'}}
         />
-        <Image
-          source={{uri: 'https://cdn-icons-png.flaticon.com/512/70/70196.png'}}
-          style={{height: 20, width: 20}}
-        />
       </View>
     </View>
   );
 };
 
 export default React.memo(RCTrackPlayer);
+
+const stylesA = StyleSheet.create({
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+});

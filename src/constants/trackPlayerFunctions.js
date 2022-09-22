@@ -1,36 +1,35 @@
-import TrackPlayer, {State, useProgress} from 'react-native-track-player';
+import TrackPlayer, {
+  Capability,
+  State,
+  usePlaybackState,
+} from 'react-native-track-player';
 
 export const trackPlayerSetup = async songLists => {
   try {
     await TrackPlayer.setupPlayer();
     await TrackPlayer.add(songLists);
+    await TrackPlayer.updateOptions({
+      stoppingAppPausesPlayback: true,
+      capabilities: [
+        Capability.Play,
+        Capability.Pause,
+        Capability.SkipToNext,
+        Capability.SkipToPrevious,
+      ],
+    });
   } catch (error) {
-    console.log('error', error);
-  }
-};
-
-export const trackInfo = async infoCallBack => {
-  try {
-    const trackIndex = await TrackPlayer.getCurrentTrack();
-    const trackObject = await TrackPlayer.getTrack(trackIndex);
-    infoCallBack(trackObject);
-  } catch (error) {
-    console.log('not able to set index');
+    console.log('check your trackPlayerSetup function');
   }
 };
 
 export const playBackStateToggling = async () => {
   try {
     const trackState = await TrackPlayer.getState();
-    if (trackState != State.Playing) {
-      console.log('play', trackState);
-      TrackPlayer.play();
-    } else {
-      console.log('paused', trackState);
-      TrackPlayer.pause();
-    }
+    if (trackState != State.Playing) TrackPlayer.play();
+    else if (trackState == State.Buffering) alert('buffering');
+    else TrackPlayer.pause();
   } catch (error) {
-    console.log('song is not playing');
+    console.log('check your playBackStateToggling function');
   }
 };
 
@@ -38,7 +37,15 @@ export const seekToTrack = async value => {
   try {
     await TrackPlayer.seekTo(value);
   } catch (error) {
-    alert('error');
+    alert('check your seekToTrack function');
+  }
+};
+
+export const skipToNextPreviousTrack = async trackIndex => {
+  try {
+    await TrackPlayer.skip(trackIndex);
+  } catch (error) {
+    alert('check your skipToNextPreviousTrack function');
   }
 };
 
@@ -57,6 +64,4 @@ export const formatTime = (trackTime, conditionalValues) => {
   return result;
 };
 
-export const skipToNextPreviousTrack = async trackIndex => {
-  await TrackPlayer.skip(trackIndex);
-};
+export const errorHandling = () => {};
