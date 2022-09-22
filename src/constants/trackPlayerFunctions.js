@@ -55,6 +55,8 @@ export const formatTime = (trackTime, conditionalValues) => {
     timeInMin >= 1
       ? Math.round(trackTime) - timeInMin * 60
       : Math.round(trackTime);
+      if (timeInMin == -1) {timeInMin = 0}
+      if (timeInSec == -1) {timeInSec = 0}
   var result =
     timeInSec % 60 === 0
       ? `0${timeInMin} : 00`
