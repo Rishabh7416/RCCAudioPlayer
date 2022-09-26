@@ -1,28 +1,37 @@
 import {styles} from '../styles';
-import React, {forwardRef, useRef} from 'react';
+import React, {forwardRef, useRef, useState} from 'react';
 import {Animated, Image} from 'react-native';
-import TrackPlayer from 'react-native-track-player';
+import {vw} from '../../constants/dimensions';
 
 const RenderSongList = forwardRef(({songLists}, ref) => {
+  const [currentIndex, setIndex] = useState(0);
+
   const renderSongsDetails = ({item}) => {
     return (
-      <Animated.View>
-        <Image source={{uri: item.image}} style={styles.imagePosterStyles} />
+      <Animated.View
+        style={{
+          ...styles.imagePosterStyles,
+          overflow: 'hidden',
+          backgroundColor: 'red',
+          // marginRight: vw(getMargin())
+        }}>
+        <Image
+          source={{uri: item.image}}
+          style={{
+            resizeMode: 'contain',
+            height: '100%',
+            width: '100%',
+          }}
+        />
       </Animated.View>
     );
   };
 
-  const onViewableItemsChanged = listItem => {
-    if (listItem.viewableItems[0].index !== listItem.changed[0].index) {
-      TrackPlayer.play();
-      if (listItem.viewableItems[0].index) {
-        TrackPlayer.pause();
-      } else {
-        TrackPlayer.play();
-      }
-    } else {
-      TrackPlayer.pause();
-    }
+  const onViewableItemsChanged = listItem => {};
+
+  const viewabilityConfig = {
+    minimumViewTime: 600,
+    itemVisiblePercentThreshold: 60,
   };
 
   const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
@@ -37,9 +46,8 @@ const RenderSongList = forwardRef(({songLists}, ref) => {
       keyExtractor={item => item.id}
       renderItem={renderSongsDetails}
       decelerationRate={0}
-      snapToInterval={360 + 10}
+      snapToInterval={vw(360.8)}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{justifyContent: 'center'}}
       onScroll={Animated.event([{nativeEvent: {contentOffset: {x: ref}}}], {
         useNativeDriver: true,
       })}

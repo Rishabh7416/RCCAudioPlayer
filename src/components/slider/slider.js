@@ -1,35 +1,34 @@
 import React from 'react';
-import Slider from '@react-native-community/slider';
+import {styles} from '../styles';
+import Icon from '../button/icon';
 import {
   formatTime,
   playBackStateToggling,
 } from '../../constants/trackPlayerFunctions';
+import Slider from '@react-native-community/slider';
 import {View, Text, StyleSheet} from 'react-native';
 import {normalize, vh, vw} from '../../constants/dimensions';
-import {styles} from '../styles';
-import Icon from '../button/icon';
 import {State, usePlaybackState, useProgress} from 'react-native-track-player';
 
 export const SliderComp = ({
   step,
-  minimumValue,
-  maximumTrackTintColor,
-  minimumTrackTintColor,
-  onSlidingComplete,
   scrollNext,
+  minimumValue,
   scrollPrevious,
   playButtonIcon,
   skipToNextIcon,
   pauseButtonIcon,
+  onSlidingComplete,
   skipToPreviousIcon,
+  maximumTrackTintColor,
+  minimumTrackTintColor,
 }) => {
-  
-  const [timing, setTiming] = React.useState(0);
-  const playBackState = usePlaybackState();
   const progress = useProgress();
+  const playBackState = usePlaybackState();
+  const [timing, setTiming] = React.useState(0);
 
   return (
-    <View>
+    <React.Fragment>
       <Slider
         step={step}
         minimumValue={minimumValue}
@@ -68,7 +67,7 @@ export const SliderComp = ({
           containerStyle={{alignItems: 'center'}}
         />
       </View>
-    </View>
+    </React.Fragment>
   );
 };
 

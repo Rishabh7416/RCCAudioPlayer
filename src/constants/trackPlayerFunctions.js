@@ -26,7 +26,7 @@ export const playBackStateToggling = async () => {
   try {
     const trackState = await TrackPlayer.getState();
     if (trackState != State.Playing) TrackPlayer.play();
-    else if (trackState == State.Buffering) alert('buffering');
+    if (trackState == State.Buffering) alert('buffering');
     else TrackPlayer.pause();
   } catch (error) {
     console.log('check your playBackStateToggling function');

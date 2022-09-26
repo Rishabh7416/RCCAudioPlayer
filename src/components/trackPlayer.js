@@ -7,11 +7,9 @@ import {
 } from '../constants/trackPlayerFunctions';
 import {SliderComp} from './slider/slider';
 import {vw} from '../constants/dimensions';
-import TrackPlayer, {State} from 'react-native-track-player';
-import {View, Text, Animated, Dimensions} from 'react-native';
+import {State} from 'react-native-track-player';
+import {View, Text, Animated} from 'react-native';
 import RenderSongList from './renderSongList.js/renderSongList';
-
-const {height, width} = Dimensions.get('screen');
 
 const RCTrackPlayer = ({
   songLists,
@@ -20,20 +18,19 @@ const RCTrackPlayer = ({
   pauseButtonIcon,
   skipToPreviousIcon,
 }) => {
-  // console.log('conponent renderer');
   const scrollToPreviousNext = React.useRef(null);
   const [songIndex, setSongIndex] = React.useState(0);
   const scrollRef = React.useRef(new Animated.Value(0)).current;
 
   const scrollNext = () => {
     scrollRef.current.scrollToOffset({
-      offset: (songIndex + 1) * width - vw(23),
+      offset: (songIndex + 1) * vw(360.2),
     });
   };
 
   const scrollPrevious = React.useCallback(() => {
     scrollRef.current.scrollToOffset({
-      offset: (songIndex - 1) * width - vw(23),
+      offset: (songIndex - 1) * vw(360.2),
     });
   }, [songIndex]);
 
@@ -41,20 +38,21 @@ const RCTrackPlayer = ({
     trackPlayerSetup(songLists);
 
     scrollRef.addListener(({value}) => {
-      const index = Math.round(value / width);
+      const index = Math.round(value / vw(360.2));
       skipToNextPreviousTrack(index);
-      setSongIndex(index);
-      console.log('index', index);
+      if(songIndex !== index) {
+        setSongIndex(index)
+      };
     });
 
     return () => {
       scrollRef.removeAllListeners();
-      TrackPlayer.reset();
+      // TrackPlayer.reset();
     };
-  }, [songIndex]);
+  }, []);
 
   return (
-    <View style={{paddingHorizontal: vw(12)}}>
+    <View style={{paddingHorizontal: vw(10)}}>
       <RenderSongList ref={scrollRef} songLists={songLists} state={State} />
       <Text style={styles.textStyle}>{songLists[songIndex]?.title}</Text>
       <Text style={{marginBottom: 10}}>{songLists[songIndex]?.artist}</Text>

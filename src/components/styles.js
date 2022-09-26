@@ -6,37 +6,36 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: vh(10),
     width: '50%',
     alignSelf: 'center',
   },
 
   playButtonIconStyle: {
-    height: 56,
-    width: 56,
+    height: vw(56),
+    width: vw(56),
   },
 
   pauseButtonIconStyle: {
-    height: 56,
-    width: 56,
+    height: vw(56),
+    width: vw(56),
   },
 
   skipToNextIconStyle: {
-    height: 24,
-    width: 24,
+    height: vw(24),
+    width: vw(24),
   },
 
   skipToPreviousIconStyle: {
-    height: 24,
-    width: 24,
+    height: vw(24),
+    width: vw(24),
   },
   imagePosterStyles: {
     alignSelf: 'center',
-    height: vw(350),
-    width: vw(350),
-    resizeMode: 'contain',
-    borderRadius: 10,
-    margin: vw(2)
+    height: vw(360),
+    width: vw(360),
+    borderRadius: normalize(10),
+    // margin: vw(2)
   },
 
   textStyle: {

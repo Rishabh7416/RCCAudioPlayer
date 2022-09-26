@@ -1,7 +1,7 @@
 export const tracks = [
   {
     id: 0,
-    url: require('../assets/tracks/Unstoppable_320(PaglaSongs).mp3'),
+    url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
     title: 'Rumbling',
     artist: 'Attack on titans',
     image:
@@ -22,4 +22,18 @@ export const tracks = [
     artist: 'Zack Night',
     image: 'https://c.saavncdn.com/502/Nakhre-Hindi-2015-500x500.jpg',
   },
+  {
+    id: 3,
+    url: require('../assets/tracks/Unstoppable_320(PaglaSongs).mp3'),
+    title: 'Nakhre',
+    artist: 'Zack Night',
+    image: 'https://c.saavncdn.com/502/Nakhre-Hindi-2015-500x500.jpg',
+  },
+  {
+    id: 4,
+    url: require('../assets/tracks/Unstoppable_320(PaglaSongs).mp3'),
+    title: 'Nakhre',
+    artist: 'Zack Night',
+    image: 'https://c.saavncdn.com/502/Nakhre-Hindi-2015-500x500.jpg',
+  }
 ];
