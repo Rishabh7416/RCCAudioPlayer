@@ -2,6 +2,9 @@ import {StyleSheet} from 'react-native';
 import {vh, vw, normalize} from '../constants/dimensions';
 
 export const styles = StyleSheet.create({
+  main: {
+    flex:1,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -39,8 +42,8 @@ export const styles = StyleSheet.create({
   },
 
   textStyle: {
-    marginTop: vh(35),
-    marginBottom: vh(5),
+    // marginTop: vh(35),
+    // marginBottom: vh(5),
     fontSize: normalize(20),
     letterSpacing: normalize(0.5),
     fontWeight: '600',

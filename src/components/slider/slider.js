@@ -28,7 +28,7 @@ export const SliderComp = ({
   const [timing, setTiming] = React.useState(0);
 
   return (
-    <React.Fragment>
+    <View >
       <Slider
         step={step}
         minimumValue={minimumValue}
@@ -67,7 +67,7 @@ export const SliderComp = ({
           containerStyle={{alignItems: 'center'}}
         />
       </View>
-    </React.Fragment>
+    </View>
   );
 };
 
