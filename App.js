@@ -9,14 +9,14 @@ export default function App() {
   return (
     <React.Fragment>
       <SafeAreaView />
-      {/* <Responder/> */}
-      <RCTrackPlayer
+      <Responder/>
+      {/* <RCTrackPlayer
         songLists={tracks}
         playButtonIcon={LocalImages.playButtonIcon}
         skipToNextIcon={LocalImages.skipToNextIcon}
         pauseButtonIcon={LocalImages.pauseButtonIcon}
         skipToPreviousIcon={LocalImages.skipToPreviousIcon}
-      />
+      /> */}
     </React.Fragment>
   );
 }
