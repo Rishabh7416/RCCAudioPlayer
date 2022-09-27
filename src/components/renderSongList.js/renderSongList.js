@@ -1,7 +1,8 @@
 import React, {forwardRef, useCallback, useRef, useState} from 'react';
 import {StyleSheet, Animated, View, Image} from 'react-native';
+import TrackPlayer from 'react-native-track-player';
 import {SCREEN_WIDTH, vw} from '../../constants/dimensions';
-import { SkipTo,PlayTrack, getCurrentTrack, PauseTrack } from '../../constants/trackPlayerFunctions';
+import { SkipTo,PlayTrack, getCurrentTrack, PauseTrack, NextTrack, getCurrentTrackIndex, PerviousTrack } from '../../constants/trackPlayerFunctions';
 
 const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
   
@@ -21,12 +22,26 @@ const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
     );
   };
 
+  const CheckTrackIndex = async viewableIndex => {
+    const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+    console.log(currentTrackIndex, viewableIndex);
+
+    if (viewableIndex > currentTrackIndex) NextTrack();
+    else if (viewableIndex < currentTrackIndex) PerviousTrack();
+  };
+
    const onViewableItemsChanged = React.useCallback(({viewableItems, changed}) => {
+
+
+
     if (changed[0].isViewable) {
 
+    const viewableIndex= viewableItems[0].index;
+    console.log(viewableIndex)
+    //  CheckTrackIndex(viewableIndex)
       SkipTo(viewableItems[0].index,()=>{
-        getCurrentTrack((track)=>{callBack(track),PlayTrack()},viewableItems[0].index)});
-    }
+        getCurrentTrack((track)=>{callBack(track)},viewableItems[0].index)});
+     }
   }, []);
 
   const viewabilityConfig = {
