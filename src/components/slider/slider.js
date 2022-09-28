@@ -6,9 +6,10 @@ import {
   playBackStateToggling,
 } from '../../constants/trackPlayerFunctions';
 import Slider from '@react-native-community/slider';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet,ActivityIndicator} from 'react-native';
 import {normalize, vh, vw} from '../../constants/dimensions';
 import {State, usePlaybackState, useProgress} from 'react-native-track-player';
+import { connect } from 'react-redux';
 
 export const SliderComp = ({
   step,
@@ -26,7 +27,7 @@ export const SliderComp = ({
   const progress = useProgress();
   const playBackState = usePlaybackState();
   const [timing, setTiming] = React.useState(0);
-
+  console.log(progress,playBackState)
   return (
     <View >
       <Slider
@@ -40,7 +41,7 @@ export const SliderComp = ({
         onSlidingComplete={onSlidingComplete}
       />
       <View style={stylesA.titleContainer}>
-        <Text style={stylesA.durationStyle}>{formatTime(timing, true)}</Text>
+        <Text style={stylesA.durationStyle}>{formatTime(progress.position, true)}</Text>
         <Text style={stylesA.durationStyle}>
           {`-${formatTime(progress.duration - timing, false)}`}
         </Text>
@@ -52,14 +53,14 @@ export const SliderComp = ({
           containerStyle={{alignItems: 'center'}}
           iconStyle={styles.skipToPreviousIconStyle}
         />
-        <Icon
+     {playBackState===State.Connecting?<ActivityIndicator color={'black'} size={'large'}/>:  <Icon
           onPress={() => playBackStateToggling()}
           iconStyle={styles.playButtonIconStyle}
           containerStyle={{alignItems: 'center'}}
           icon={
-            playBackState !== State.Playing ? playButtonIcon : pauseButtonIcon
+             playBackState !== State.Playing ? playButtonIcon : pauseButtonIcon
           }
-        />
+        />}
         <Icon
           icon={skipToNextIcon}
           onPress={() => scrollNext()}

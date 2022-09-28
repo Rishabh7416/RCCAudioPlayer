@@ -11,7 +11,7 @@ import {
 } from '../constants/trackPlayerFunctions';
 import {SliderComp} from './slider/slider';
 import {vw} from '../constants/dimensions';
-import {State} from 'react-native-track-player';
+import {State, useProgress} from 'react-native-track-player';
 import {View, Text, Animated} from 'react-native';
 import RenderSongList from './renderSongList.js/renderSongList';
 
@@ -25,7 +25,7 @@ const RCTrackPlayer = ({
  
   const [currentTrack, setCurrentTrack] = React.useState(null);
   const [currentQueue, setCurrentQueue] = React.useState([]);
-
+  const progress=useProgress();
   const scrollRef = React.useRef(0);
 
   const ScrollToIndex = () => {
@@ -40,8 +40,9 @@ const setuptrack =async() => {
   await  getCurrentTrackIndex(index => {
       getCurrentTrack(setCurrentTrack, index);
     })
- 
 }
+
+
   React.useEffect(() => {
     setuptrack()
   }, []);
