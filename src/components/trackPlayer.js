@@ -4,10 +4,14 @@ import {
   seekToTrack,
   trackPlayerSetup,
   skipToNextPreviousTrack,
+  PerviousTrack,
+  NextTrack,
+  getCurrentTrack,
+  getCurrentTrackIndex
 } from '../constants/trackPlayerFunctions';
 import {SliderComp} from './slider/slider';
 import {vw} from '../constants/dimensions';
-import {State} from 'react-native-track-player';
+import {State, useProgress} from 'react-native-track-player';
 import {View, Text, Animated} from 'react-native';
 import RenderSongList from './renderSongList.js/renderSongList';
 
@@ -18,52 +22,44 @@ const RCTrackPlayer = ({
   pauseButtonIcon,
   skipToPreviousIcon,
 }) => {
-  const scrollToPreviousNext = React.useRef(null);
-  const [songIndex, setSongIndex] = React.useState(0);
-  const scrollRef = React.useRef(new Animated.Value(0)).current;
+ 
+  const [currentTrack, setCurrentTrack] = React.useState(null);
+  const [currentQueue, setCurrentQueue] = React.useState([]);
+  const progress=useProgress();
+  const scrollRef = React.useRef(0);
 
-  const scrollNext = () => {
-    scrollRef.current.scrollToOffset({
-      offset: (songIndex + 1) * vw(360.2),
-    });
+  const ScrollToIndex = () => {
+    getCurrentTrackIndex(index =>{
+      getCurrentTrack(setCurrentTrack,index)
+      scrollRef.current.scrollToIndex({index, animated: true})},
+    );
   };
+   
+const setuptrack =async() => { 
+  await trackPlayerSetup(songLists);
+  await  getCurrentTrackIndex(index => {
+      getCurrentTrack(setCurrentTrack, index);
+    })
+}
 
-  const scrollPrevious = React.useCallback(() => {
-    scrollRef.current.scrollToOffset({
-      offset: (songIndex - 1) * vw(360.2),
-    });
-  }, [songIndex]);
 
-  React.useLayoutEffect(() => {
-    trackPlayerSetup(songLists);
-
-    scrollRef.addListener(({value}) => {
-      const index = Math.round(value / vw(360.2));
-      skipToNextPreviousTrack(index);
-      if(songIndex !== index) {
-        setSongIndex(index)
-      };
-    });
-
-    return () => {
-      scrollRef.removeAllListeners();
-      // TrackPlayer.reset();
-    };
+  React.useEffect(() => {
+    setuptrack()
   }, []);
 
   return (
-    <View style={{paddingHorizontal: vw(10)}}>
-      <RenderSongList ref={scrollRef} songLists={songLists} state={State} />
-      <Text style={styles.textStyle}>{songLists[songIndex]?.title}</Text>
-      <Text style={{marginBottom: 10}}>{songLists[songIndex]?.artist}</Text>
+    <View style={{flex:1}} >
+      <RenderSongList ref={scrollRef} songLists={songLists} callBack={(res) => setCurrentTrack(res)} />
+      <Text style={styles.textStyle}>{currentTrack?.title}</Text>
+      <Text style={{marginBottom: 10}}>{currentTrack?.artist}</Text>
       <SliderComp
         step={1}
         minimumValue={0}
         maximumTrackTintColor="grey"
         minimumTrackTintColor="aqua"
         onSlidingComplete={value => seekToTrack(value)}
-        scrollPrevious={() => scrollPrevious()}
-        scrollNext={() => scrollNext()}
+        scrollPrevious={() => PerviousTrack(ScrollToIndex)}
+        scrollNext={() => NextTrack(ScrollToIndex)}
         skipToPreviousIcon={skipToPreviousIcon}
         pauseButtonIcon={pauseButtonIcon}
         playButtonIcon={playButtonIcon}

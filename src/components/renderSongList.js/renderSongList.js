@@ -1,58 +1,86 @@
-import {styles} from '../styles';
-import React, {forwardRef, useRef, useState} from 'react';
-import {Animated, Image} from 'react-native';
-import {vw} from '../../constants/dimensions';
+import React, {forwardRef, useCallback, useRef, useState} from 'react';
+import {StyleSheet, Animated, View, Image} from 'react-native';
+import TrackPlayer from 'react-native-track-player';
+import {SCREEN_WIDTH, vw} from '../../constants/dimensions';
+import { SkipTo,PlayTrack, getCurrentTrack, PauseTrack, NextTrack, getCurrentTrackIndex, PerviousTrack } from '../../constants/trackPlayerFunctions';
 
-const RenderSongList = forwardRef(({songLists}, ref) => {
-  const [currentIndex, setIndex] = useState(0);
+const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
+  
 
   const renderSongsDetails = ({item}) => {
     return (
-      <Animated.View
-        style={{
-          ...styles.imagePosterStyles,
-          overflow: 'hidden',
-          backgroundColor: 'red',
-          // marginRight: vw(getMargin())
-        }}>
+      <View style={styles.container}>
         <Image
-          source={{uri: item.image}}
-          style={{
-            resizeMode: 'contain',
-            height: '100%',
-            width: '100%',
-          }}
+          style={styles.artwork}
+          source={
+            typeof item.artwork === 'string' && item.artwork.includes('http')
+              ? {uri: `${item?.artwork}`}
+              : {uri: `${item?.artwork?.uri}`}
+          }
         />
-      </Animated.View>
+      </View>
     );
   };
 
-  const onViewableItemsChanged = listItem => {};
+  const CheckTrackIndex = async viewableIndex => {
+    const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+    console.log(currentTrackIndex, viewableIndex);
 
-  const viewabilityConfig = {
-    minimumViewTime: 600,
-    itemVisiblePercentThreshold: 60,
+    if (viewableIndex > currentTrackIndex) NextTrack();
+    else if (viewableIndex < currentTrackIndex) PerviousTrack();
   };
 
-  const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
+   const onViewableItemsChanged = React.useCallback(({viewableItems, changed}) => {
+
+
+
+    if (changed[0].isViewable) {
+
+    const viewableIndex= viewableItems[0].index;
+    console.log(viewableIndex)
+    //  CheckTrackIndex(viewableIndex)
+      SkipTo(viewableItems[0].index,()=>{
+        getCurrentTrack((track)=>{callBack(track)},viewableItems[0].index)});
+     }
+  }, []);
+
+  const viewabilityConfig = {
+    waitForInteraction: true,
+    minimumViewTime: 600,
+    itemVisiblePercentThreshold:85,
+  };
+
+  const viewabilityConfigCallbackPairs = useRef([{viewabilityConfig,onViewableItemsChanged}]);
 
   return (
-    <Animated.FlatList
-      ref={ref}
-      horizontal
-      pagingEnabled
-      viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-      data={songLists}
-      keyExtractor={item => item.id}
-      renderItem={renderSongsDetails}
-      decelerationRate={0}
-      snapToInterval={vw(360.8)}
-      showsHorizontalScrollIndicator={false}
-      onScroll={Animated.event([{nativeEvent: {contentOffset: {x: ref}}}], {
-        useNativeDriver: true,
-      })}
-    />
+    <View style={styles.mainContainer}>
+      <Animated.FlatList
+        ref={ref}
+        horizontal={true}
+        pagingEnabled
+        bounces={false}
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        data={songLists}
+        keyExtractor={item => item.id}
+        renderItem={renderSongsDetails}
+        showsHorizontalScrollIndicator={false}
+      />
+    </View>
   );
+});
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    marginVertical: 10,
+  },
+  container: {
+    alignItems: 'center',
+    width: SCREEN_WIDTH,
+  },
+  artwork: {
+    aspectRatio: 1,
+    height: 350,
+  },
 });
 
 export default React.memo(RenderSongList);
