@@ -1,5 +1,5 @@
 import React, {forwardRef, useCallback, useRef, useState} from 'react';
-import {StyleSheet, Animated, View, Image} from 'react-native';
+import {StyleSheet, Animated, View, Image,FlatList} from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import {SCREEN_WIDTH, vw} from '../../constants/dimensions';
 import { SkipTo,PlayTrack, getCurrentTrack, PauseTrack, NextTrack, getCurrentTrackIndex, PerviousTrack } from '../../constants/trackPlayerFunctions';
@@ -11,6 +11,7 @@ const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
     return (
       <View style={styles.container}>
         <Image
+        resizeMode='contain'
           style={styles.artwork}
           source={
             typeof item.artwork === 'string' && item.artwork.includes('http')
@@ -44,26 +45,50 @@ const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
      }
   }, []);
 
-  const viewabilityConfig = {
-    waitForInteraction: true,
-    minimumViewTime: 600,
-    itemVisiblePercentThreshold:85,
-  };
+  // const viewabilityConfig = {
+  //   waitForInteraction: true,
+  //   minimumViewTime: 600,
+  //   itemVisiblePercentThreshold:85,
+  // };
 
-  const viewabilityConfigCallbackPairs = useRef([{viewabilityConfig,onViewableItemsChanged}]);
+  // const viewabilityConfigCallbackPairs = useRef([{viewabilityConfig,onViewableItemsChanged}]);
 
   return (
+  //   <View style={{height:'100%',width:'100%'}}>
+  //   <FlatList
+  //  data={songLists}
+  //  horizontal
+  //  renderItem={({item})=>{
+  //    return(
+  //     <View style={styles.container}>
+  //     <Image
+  //     resizeMode='contain'
+  //       style={{height:'100%',width:'100%'}}
+  //       source={
+  //         typeof item.artwork === 'string' && item.artwork.includes('http')
+  //           ? {uri: `${item?.artwork}`}
+  //           : {uri: `${item?.artwork?.uri}`}
+  //       }
+  //     />
+  //   </View>
+  //    )
+  //  }}
+  //  />
+  //   </View>
     <View style={styles.mainContainer}>
-      <Animated.FlatList
+      <FlatList
         ref={ref}
         horizontal={true}
-        pagingEnabled
-        bounces={false}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        // scrollEnabled={true}
+        // pagingEnabled
+        // bounces={false}
+        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         data={songLists}
         keyExtractor={item => item.id}
         renderItem={renderSongsDetails}
+        // contentContainerStyle={{backgroundColor:'green',width: 200}}
         showsHorizontalScrollIndicator={false}
+        
       />
     </View>
   );
@@ -71,15 +96,21 @@ const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginVertical: 10,
+    height: '100%',
+    width:'100%',
   },
   container: {
     alignItems: 'center',
-    width: SCREEN_WIDTH,
+    backgroundColor:'black',
+    width: 300,
+    height: 400,
+    // width:'100%',
+    // height:'100%',
+    margin:5,
   },
   artwork: {
-    aspectRatio: 1,
-    height: 350,
+    height:'100%',
+    width:'100%'
   },
 });
 
