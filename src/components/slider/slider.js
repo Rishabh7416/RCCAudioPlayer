@@ -29,7 +29,7 @@ export const SliderComp = ({
   const [timing, setTiming] = React.useState(0);
   console.log(progress,playBackState)
   return (
-    <View >
+    <View style={stylesA.mainSlider} >
       <Slider
         step={step}
         minimumValue={minimumValue}
@@ -38,12 +38,14 @@ export const SliderComp = ({
         maximumTrackTintColor={maximumTrackTintColor}
         minimumTrackTintColor={minimumTrackTintColor}
         maximumValue={progress.duration}
+        tapToSeek={true}
         onSlidingComplete={onSlidingComplete}
+        
       />
       <View style={stylesA.titleContainer}>
         <Text style={stylesA.durationStyle}>{formatTime(progress.position, true)}</Text>
         <Text style={stylesA.durationStyle}>
-          {`-${formatTime(progress.duration - timing, false)}`}
+          {`${formatTime(progress.duration - timing, false)}`}
         </Text>
       </View>
       <View style={styles.buttonContainer}>
@@ -53,7 +55,7 @@ export const SliderComp = ({
           containerStyle={{alignItems: 'center'}}
           iconStyle={styles.skipToPreviousIconStyle}
         />
-     {playBackState===State.Connecting?<ActivityIndicator color={'black'} size={'large'}/>:  <Icon
+     {playBackState===State.Connecting?<ActivityIndicator color={'black'} size={'large'} style={stylesA.bufferIcon}/>:  <Icon
           onPress={() => playBackStateToggling()}
           iconStyle={styles.playButtonIconStyle}
           containerStyle={{alignItems: 'center'}}
@@ -73,6 +75,9 @@ export const SliderComp = ({
 };
 
 const stylesA = StyleSheet.create({
+  mainSlider:{
+    marginHorizontal:vw(20)
+  },
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -85,7 +90,11 @@ const stylesA = StyleSheet.create({
     letterSpacing: normalize(0.5),
     fontWeight: '600',
   },
-
+bufferIcon:{
+  height: vw(56),
+    width: vw(56),
+    marginHorizontal: vw(20),
+},
   durationStyle: {
     fontSize: normalize(10),
   },
