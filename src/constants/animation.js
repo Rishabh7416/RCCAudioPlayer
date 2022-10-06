@@ -1,7 +1,7 @@
-import { Animated, NativeModules } from 'react-native';
+import {Animated, NativeModules} from 'react-native';
 import {normalize, SCREEN_HEIGHT, vh} from './dimensions';
 
-const {StatusBarManager} = NativeModules
+const {StatusBarManager} = NativeModules;
 
 export const _animatedScreenHeight = animation => {
   const animatedScreenHeight = animation.y.interpolate({
@@ -36,7 +36,7 @@ export const _animatedScreenPosition = animation => {
 export const _animatedImagePosition = animation => {
   const animatedImagePosition = animation.y.interpolate({
     inputRange: [0, SCREEN_HEIGHT - normalize(150)],
-    outputRange: [normalize(13), normalize(10)],
+    outputRange: [0, normalize(10)],
     extrapolate: 'clamp',
   });
 

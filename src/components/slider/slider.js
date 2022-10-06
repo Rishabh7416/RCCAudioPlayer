@@ -6,10 +6,9 @@ import {
   playBackStateToggling,
 } from '../../constants/trackPlayerFunctions';
 import Slider from '@react-native-community/slider';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {normalize, vh, vw} from '../../constants/dimensions';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {State, usePlaybackState, useProgress} from 'react-native-track-player';
-import { LocalImages } from '../../assets/images/localimages';
 
 export const SliderComp = ({
   step,
@@ -85,9 +84,8 @@ export const SliderComp = ({
 };
 
 const stylesA = StyleSheet.create({
-  mainSlider: {
-    marginHorizontal: vw(20),
-  },
+  mainSlider: {},
+
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -100,11 +98,13 @@ const stylesA = StyleSheet.create({
     letterSpacing: normalize(0.5),
     fontWeight: '600',
   },
+
   bufferIcon: {
     height: vw(56),
     width: vw(56),
     marginHorizontal: vw(20),
   },
+
   durationStyle: {
     fontSize: normalize(10),
   },

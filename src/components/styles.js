@@ -8,16 +8,14 @@ import {
 } from '../constants/dimensions';
 
 export const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-  },
+  main: {flex: 1},
 
   buttonContainer: {
-    // marginTop: vh(10),
-    justifyContent: 'center',
+    width: '55%',
     alignSelf: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
   iconStyle: {
@@ -56,18 +54,25 @@ export const styles = StyleSheet.create({
     borderRadius: normalize(10),
   },
 
-  textStyle: {
-    fontWeight: '600',
-    marginLeft: vw(20),
-    fontSize: normalize(20),
+  titleStyle: {
+    fontWeight: '700',
+    fontSize: normalize(22),
     letterSpacing: normalize(0.5),
+    marginTop: vh(30),
+    marginBottom: vh(5)
+  },
+
+  artistStyle:{
+    color: 'grey',
+    fontWeight: '600',
+    fontWeight: '300',
   },
 
   animatedContainer: {
     flex: 1,
-    backgroundColor: 'red'
+    backgroundColor: 'red',
   },
-
+  
   animatedTransform: {
     left: 0,
     right: 0,
@@ -76,6 +81,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     height: SCREEN_HEIGHT,
     backgroundColor: 'white',
+    paddingHorizontal: normalize(13),
   },
 
   animatedBottomTrack: {
@@ -88,13 +94,14 @@ export const styles = StyleSheet.create({
     left: SCREEN_WIDTH,
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
   },
 
   animatedPosterStyle: {
     width: '100%',
     height: '100%',
     backgroundColor: 'red',
+    borderRadius: vh(5)
   },
 
   animatedTitleContainer: {

@@ -18,8 +18,6 @@ import {
   playBackStateToggling,
 } from '../constants/trackPlayerFunctions';
 import {SliderComp} from './slider/slider';
-import {vw} from '../constants/dimensions';
-import {State, usePlaybackState} from 'react-native-track-player';
 import {
   _animatedScreenHeight,
   _animatedImageHeight,
@@ -28,6 +26,7 @@ import {
   _animatedTextOpacity,
   _panResponderHandlerFuncton,
 } from '../constants/animation';
+import {State, usePlaybackState} from 'react-native-track-player';
 
 const RCTrackPlayer = ({
   songLists,
@@ -155,10 +154,8 @@ const RCTrackPlayer = ({
         </Animated.View>
 
         <Animated.View style={{opacity: _animatedSliderOpacity(animation)}}>
-          <Text style={styles.textStyle}>{currentTrack?.title}</Text>
-          <Text style={{marginBottom: 10, marginLeft: vw(20)}}>
-            {currentTrack?.artist}
-          </Text>
+          <Text style={styles.titleStyle}>{currentTrack?.title}</Text>
+          <Text style = {styles.artistStyle}>{currentTrack?.artist}</Text>
           <SliderComp
             step={1}
             minimumValue={0}

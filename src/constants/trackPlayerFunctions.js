@@ -64,10 +64,10 @@ export const formatTime = (trackTime, conditionalValues) => {
   }
   var result =
     timeInSec % 60 === 0
-      ? `0${timeInMin} : 00`
+      ? `${timeInMin}:00`
       : timeInSec > 9
-      ? `0${timeInMin} : ${timeInSec}`
-      : `0${timeInMin} : 0${timeInSec}`;
+      ? `0${timeInMin}:${timeInSec}`
+      : `0${timeInMin}:0${timeInSec}`;
   return result;
 };
 
