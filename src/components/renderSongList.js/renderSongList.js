@@ -1,17 +1,23 @@
 import React, {forwardRef, useCallback, useRef, useState} from 'react';
-import {StyleSheet, Animated, View, Image,FlatList} from 'react-native';
+import {StyleSheet, Animated, View, Image, FlatList} from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import {SCREEN_WIDTH, vw} from '../../constants/dimensions';
-import { SkipTo,PlayTrack, getCurrentTrack, PauseTrack, NextTrack, getCurrentTrackIndex, PerviousTrack } from '../../constants/trackPlayerFunctions';
+import {
+  SkipTo,
+  PlayTrack,
+  NextTrack,
+  PauseTrack,
+  PerviousTrack,
+  getCurrentTrack,
+  getCurrentTrackIndex,
+} from '../../constants/trackPlayerFunctions';
 
-const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
-  
-
+const RenderSongList = forwardRef(({songLists, callBack}, ref) => {
   const renderSongsDetails = ({item}) => {
     return (
       <View style={styles.container}>
         <Image
-        resizeMode='contain'
+          resizeMode="contain"
           style={styles.artwork}
           source={
             typeof item.artwork === 'string' && item.artwork.includes('http')
@@ -31,19 +37,21 @@ const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
     else if (viewableIndex < currentTrackIndex) PerviousTrack();
   };
 
-   const onViewableItemsChanged = React.useCallback(({viewableItems, changed}) => {
-
-
-
-    if (changed[0].isViewable) {
-
-    const viewableIndex= viewableItems[0].index;
-    console.log(viewableIndex)
-    //  CheckTrackIndex(viewableIndex)
-      SkipTo(viewableItems[0].index,()=>{
-        getCurrentTrack((track)=>{callBack(track)},viewableItems[0].index)});
-     }
-  }, []);
+  const onViewableItemsChanged = React.useCallback(
+    ({viewableItems, changed}) => {
+      if (changed[0].isViewable) {
+        const viewableIndex = viewableItems[0].index;
+        console.log(viewableIndex);
+        //  CheckTrackIndex(viewableIndex)
+        SkipTo(viewableItems[0].index, () => {
+          getCurrentTrack(track => {
+            callBack(track);
+          }, viewableItems[0].index);
+        });
+      }
+    },
+    [],
+  );
 
   // const viewabilityConfig = {
   //   waitForInteraction: true,
@@ -54,27 +62,27 @@ const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
   // const viewabilityConfigCallbackPairs = useRef([{viewabilityConfig,onViewableItemsChanged}]);
 
   return (
-  //   <View style={{height:'100%',width:'100%'}}>
-  //   <FlatList
-  //  data={songLists}
-  //  horizontal
-  //  renderItem={({item})=>{
-  //    return(
-  //     <View style={styles.container}>
-  //     <Image
-  //     resizeMode='contain'
-  //       style={{height:'100%',width:'100%'}}
-  //       source={
-  //         typeof item.artwork === 'string' && item.artwork.includes('http')
-  //           ? {uri: `${item?.artwork}`}
-  //           : {uri: `${item?.artwork?.uri}`}
-  //       }
-  //     />
-  //   </View>
-  //    )
-  //  }}
-  //  />
-  //   </View>
+    //   <View style={{height:'100%',width:'100%'}}>
+    //   <FlatList
+    //  data={songLists}
+    //  horizontal
+    //  renderItem={({item})=>{
+    //    return(
+    //     <View style={styles.container}>
+    //     <Image
+    //     resizeMode='contain'
+    //       style={{height:'100%',width:'100%'}}
+    //       source={
+    //         typeof item.artwork === 'string' && item.artwork.includes('http')
+    //           ? {uri: `${item?.artwork}`}
+    //           : {uri: `${item?.artwork?.uri}`}
+    //       }
+    //     />
+    //   </View>
+    //    )
+    //  }}
+    //  />
+    //   </View>
     <View style={styles.mainContainer}>
       <FlatList
         ref={ref}
@@ -88,7 +96,6 @@ const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
         renderItem={renderSongsDetails}
         // contentContainerStyle={{backgroundColor:'green',width: 200}}
         showsHorizontalScrollIndicator={false}
-        
       />
     </View>
   );
@@ -97,20 +104,20 @@ const RenderSongList = forwardRef(({songLists,callBack}, ref) => {
 const styles = StyleSheet.create({
   mainContainer: {
     height: '100%',
-    width:'100%',
+    width: '100%',
   },
   container: {
     alignItems: 'center',
-    backgroundColor:'black',
+    backgroundColor: 'red',
     width: 300,
     height: 400,
     // width:'100%',
     // height:'100%',
-    margin:5,
+    margin: 5,
   },
   artwork: {
-    height:'100%',
-    width:'100%'
+    height: '100%',
+    width: '100%',
   },
 });
 

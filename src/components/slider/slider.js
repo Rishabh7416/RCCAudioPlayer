@@ -6,10 +6,10 @@ import {
   playBackStateToggling,
 } from '../../constants/trackPlayerFunctions';
 import Slider from '@react-native-community/slider';
-import {View, Text, StyleSheet,ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {normalize, vh, vw} from '../../constants/dimensions';
 import {State, usePlaybackState, useProgress} from 'react-native-track-player';
-import { connect } from 'react-redux';
+import { LocalImages } from '../../assets/images/localimages';
 
 export const SliderComp = ({
   step,
@@ -27,23 +27,25 @@ export const SliderComp = ({
   const progress = useProgress();
   const playBackState = usePlaybackState();
   const [timing, setTiming] = React.useState(0);
-  console.log(progress,playBackState)
+
   return (
-    <View style={stylesA.mainSlider} >
+    <View style={stylesA.mainSlider}>
       <Slider
         step={step}
-        minimumValue={minimumValue}
+        tapToSeek={true}
         value={progress.position}
+        minimumValue={minimumValue}
+        maximumValue={progress.duration}
+        onSlidingComplete={onSlidingComplete}
         onValueChange={values => setTiming(values)}
         maximumTrackTintColor={maximumTrackTintColor}
         minimumTrackTintColor={minimumTrackTintColor}
-        maximumValue={progress.duration}
-        tapToSeek={true}
-        onSlidingComplete={onSlidingComplete}
-        
+        // thumbImage = {LocalImages.thumbIcon}
       />
       <View style={stylesA.titleContainer}>
-        <Text style={stylesA.durationStyle}>{formatTime(progress.position, true)}</Text>
+        <Text style={stylesA.durationStyle}>
+          {formatTime(progress.position, true)}
+        </Text>
         <Text style={stylesA.durationStyle}>
           {`${formatTime(progress.duration - timing, false)}`}
         </Text>
@@ -55,14 +57,22 @@ export const SliderComp = ({
           containerStyle={{alignItems: 'center'}}
           iconStyle={styles.skipToPreviousIconStyle}
         />
-     {playBackState===State.Connecting?<ActivityIndicator color={'black'} size={'large'} style={stylesA.bufferIcon}/>:  <Icon
-          onPress={() => playBackStateToggling()}
-          iconStyle={styles.playButtonIconStyle}
-          containerStyle={{alignItems: 'center'}}
-          icon={
-             playBackState !== State.Playing ? playButtonIcon : pauseButtonIcon
-          }
-        />}
+        {playBackState === State.Connecting ? (
+          <ActivityIndicator
+            color={'black'}
+            size={'large'}
+            style={stylesA.bufferIcon}
+          />
+        ) : (
+          <Icon
+            onPress={() => playBackStateToggling()}
+            iconStyle={styles.playButtonIconStyle}
+            containerStyle={{alignItems: 'center'}}
+            icon={
+              playBackState !== State.Playing ? playButtonIcon : pauseButtonIcon
+            }
+          />
+        )}
         <Icon
           icon={skipToNextIcon}
           onPress={() => scrollNext()}
@@ -75,8 +85,8 @@ export const SliderComp = ({
 };
 
 const stylesA = StyleSheet.create({
-  mainSlider:{
-    marginHorizontal:vw(20)
+  mainSlider: {
+    marginHorizontal: vw(20),
   },
   titleContainer: {
     flexDirection: 'row',
@@ -90,11 +100,11 @@ const stylesA = StyleSheet.create({
     letterSpacing: normalize(0.5),
     fontWeight: '600',
   },
-bufferIcon:{
-  height: vw(56),
+  bufferIcon: {
+    height: vw(56),
     width: vw(56),
     marginHorizontal: vw(20),
-},
+  },
   durationStyle: {
     fontSize: normalize(10),
   },
