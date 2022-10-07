@@ -19,34 +19,78 @@ import {
 } from '../constants/trackPlayerFunctions';
 import {SliderComp} from './slider/slider';
 import {
-  _animatedScreenHeight,
+  _animatedTextOpacity,
   _animatedImageHeight,
+  _animatedScreenHeight,
   _animatedImagePosition,
   _animatedSliderOpacity,
-  _animatedTextOpacity,
   _panResponderHandlerFuncton,
 } from '../constants/animation';
+import {LocalImages} from '../assets/images/localimages';
 import {State, usePlaybackState} from 'react-native-track-player';
 
 const RCTrackPlayer = ({
   songLists,
   playButtonIcon,
+  titleViewStyle,
   skipToNextIcon,
   pauseButtonIcon,
   skipToPreviousIcon,
+  animatedTitleTxtStyle,
+  animatedContainerStyle,
+  animatedArtistTxtStyle,
+  animatedPosterStyleProp,
+  animatedBottomTrackStyle,
+  animatedTitleContainerStyle,
+  animatedBottomTrackContainerStyle,
 }) => {
-  // const scrollRef = React.useRef(0);
+  const propHandler = {
+    songLists_key: songLists ? songLists : null,
+    titleViewStyle: titleViewStyle ? titleViewStyle : styles.titleView,
+    playButtonIcon_key: playButtonIcon
+      ? playButtonIcon
+      : LocalImages.playButtonIcon,
+    skipToNextIcon_key: skipToNextIcon
+      ? skipToNextIcon
+      : LocalImages.skipToNextIcon,
+    pauseButtonIcon_key: pauseButtonIcon
+      ? pauseButtonIcon
+      : LocalImages.pauseButtonIcon,
+    skipToPreviousIcon_key: skipToPreviousIcon
+      ? skipToPreviousIcon
+      : LocalImages.skipToPreviousIcon,
+    animatedTitleTxtStyle: animatedTitleTxtStyle
+      ? animatedTitleTxtStyle
+      : styles.animatedTitleTxt,
+    animatedArtistTxtStyle: animatedArtistTxtStyle
+      ? animatedArtistTxtStyle
+      : styles.animatedArtistTxt,
+    animatedPosterStyle_key: animatedPosterStyleProp
+      ? animatedPosterStyleProp
+      : styles.animatedPosterStyle,
+    animatedBottomTrack_key: animatedBottomTrackStyle
+      ? animatedBottomTrackStyle
+      : styles.animatedBottomTrack,
+    animatedContainerStyle_key: animatedContainerStyle
+      ? animatedContainerStyle
+      : styles.animatedContainer,
+    animatedTitleContainerStyle_key: animatedTitleContainerStyle
+      ? animatedTitleContainerStyle
+      : styles.animatedTitleContainer,
+    animatedBottomTrackContainer_key: animatedBottomTrackContainerStyle
+      ? animatedBottomTrackContainerStyle
+      : styles.animatedBottomTrackContainer,
+  };
+
   const playBackState = usePlaybackState();
   const [currentHeight, setHeight] = React.useState(0);
-  // const [currentQueue, setCurrentQueue] = React.useState([]);
   const [currentTrack, setCurrentTrack] = React.useState(null);
   const animation = React.useRef(new Animated.ValueXY({x: 0, y: 0})).current;
-
   const onLayout = event => {
     const {x, y, height, width} = event.nativeEvent.layout;
     setHeight(height);
   };
-  
+
   const setTrack = async () => {
     await getCurrentTrackIndex(index => {
       getCurrentTrack(setCurrentTrack, index);
@@ -69,19 +113,17 @@ const RCTrackPlayer = ({
         animation.extractOffset();
       },
       onPanResponderMove: (eve, gestureState) => {
-        // console.log({...gestureState});
-        // console.log(animation.getLayout());
         animation.y.setValue(gestureState.dy);
       },
       onPanResponderRelease: (eve, gestureState) => {
         animation.flattenOffset();
-        _panResponderHandlerFuncton(gestureState.dy, animation)
+        _panResponderHandlerFuncton(gestureState.dy, animation);
       },
     }),
   ).current;
 
   return (
-    <Animated.View style={styles.animatedContainer}>
+    <Animated.View style={propHandler.animatedContainerStyle_key}>
       <Animated.View
         onLayout={onLayout}
         style={[
@@ -89,18 +131,18 @@ const RCTrackPlayer = ({
           {height: _animatedScreenHeight(animation)},
         ]}
         {...panResponder.panHandlers}>
-        <Animated.View style={styles.animatedBottomTrack}>
+        <Animated.View style={propHandler.animatedBottomTrack_key}>
           <Animated.View
             style={[
-              styles.animatedBottomTrackContainer,
+              propHandler.animatedBottomTrackContainer_key,
               {
-                height: _animatedImageHeight(animation),
                 width: _animatedImageHeight(animation),
                 left: _animatedImagePosition(animation),
+                height: _animatedImageHeight(animation),
               },
             ]}>
             <Animated.Image
-              style={styles.animatedPosterStyle}
+              style={propHandler.animatedPosterStyle_key}
               source={
                 typeof currentTrack?.artwork === 'string' &&
                 currentTrack?.artwork.includes('http')
@@ -109,18 +151,18 @@ const RCTrackPlayer = ({
               }
             />
           </Animated.View>
-          <Animated.View style={styles.animatedTitleContainer}>
-            <View style={styles.titleView}>
+          <Animated.View style={propHandler.animatedTitleContainerStyle_key}>
+            <View style={propHandler.titleViewStyle}>
               <Animated.Text
                 style={[
-                  styles.animatedTitleTxt,
+                  propHandler.animatedTitleTxtStyle,
                   {opacity: _animatedTextOpacity(animation)},
                 ]}>
                 {`${currentTrack?.title}`}
               </Animated.Text>
               <Animated.Text
                 style={[
-                  styles.animatedArtistTxt,
+                  propHandler.animatedArtistTxtStyle,
                   {opacity: _animatedTextOpacity(animation)},
                 ]}>
                 ({currentTrack?.artist})
@@ -129,45 +171,44 @@ const RCTrackPlayer = ({
             <View style={{marginTop: 0, ...styles.buttonContainer}}>
               {playBackState === State.Connecting ? (
                 <ActivityIndicator
-                  style={styles.iconStyle}
-                  color={'black'}
                   size={'large'}
+                  color={'black'}
+                  style={styles.iconStyle}
                 />
               ) : (
                 <Icon
-                  onPress={() => playBackStateToggling()}
                   iconStyle={styles.iconStyle}
+                  onPress={() => playBackStateToggling()}
                   icon={
                     playBackState !== State.Playing
-                      ? playButtonIcon
-                      : pauseButtonIcon
+                      ? propHandler.playButtonIcon_key
+                      : propHandler.pauseButtonIcon_key
                   }
                 />
               )}
               <Icon
-                icon={skipToNextIcon}
                 onPress={() => NextTrack(setTrack)}
+                icon={propHandler.skipToNextIcon_key}
                 iconStyle={styles.skipToNextIconStyle}
               />
             </View>
           </Animated.View>
         </Animated.View>
-
         <Animated.View style={{opacity: _animatedSliderOpacity(animation)}}>
           <Text style={styles.titleStyle}>{currentTrack?.title}</Text>
-          <Text style = {styles.artistStyle}>{currentTrack?.artist}</Text>
+          <Text style={styles.artistStyle}>{currentTrack?.artist}</Text>
           <SliderComp
             step={1}
             minimumValue={0}
             maximumTrackTintColor="grey"
             minimumTrackTintColor="aqua"
-            onSlidingComplete={value => seekToTrack(value)}
-            scrollPrevious={() => PerviousTrack(setTrack)}
             scrollNext={() => NextTrack(setTrack)}
-            skipToPreviousIcon={skipToPreviousIcon}
-            pauseButtonIcon={pauseButtonIcon}
-            playButtonIcon={playButtonIcon}
-            skipToNextIcon={skipToNextIcon}
+            scrollPrevious={() => PerviousTrack(setTrack)}
+            onSlidingComplete={value => seekToTrack(value)}
+            playButtonIcon={propHandler.playButtonIcon_key}
+            skipToNextIcon={propHandler.skipToNextIcon_key}
+            pauseButtonIcon={propHandler.pauseButtonIcon_key}
+            skipToPreviousIcon={propHandler.skipToPreviousIcon_key}
           />
         </Animated.View>
       </Animated.View>
