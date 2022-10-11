@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
 
   animatedContainer: {
     flex: 1,
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
   },
 
   animatedTransform: {
@@ -99,8 +99,8 @@ export const styles = StyleSheet.create({
   animatedPosterStyle: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'red',
-    borderRadius: vh(5),
+    // backgroundColor: 'red',
+    borderRadius: vh(5)
   },
 
   animatedTitleContainer: {
