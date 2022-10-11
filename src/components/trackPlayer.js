@@ -28,8 +28,6 @@ import {
 } from '../constants/animation';
 import {LocalImages} from '../assets/images/localimages';
 import {State, usePlaybackState} from 'react-native-track-player';
-import LinearGradient from 'react-native-linear-gradient';
-import { vw } from '../constants/dimensions';
 
 const RCTrackPlayer = ({
   songLists,
