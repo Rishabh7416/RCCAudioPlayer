@@ -27,6 +27,8 @@ import {
   _panResponderHandlerFuncton,
 } from '../constants/animation';
 import {State, usePlaybackState} from 'react-native-track-player';
+import LinearGradient from 'react-native-linear-gradient';
+import { vw } from '../constants/dimensions';
 
 const RCTrackPlayer = ({
   songLists,
@@ -89,6 +91,7 @@ const RCTrackPlayer = ({
           {height: _animatedScreenHeight(animation)},
         ]}
         {...panResponder.panHandlers}>
+        <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.gredientView}>
         <Animated.View style={styles.animatedBottomTrack}>
           <Animated.View
             style={[
@@ -104,10 +107,10 @@ const RCTrackPlayer = ({
               source={
                 typeof currentTrack?.artwork === 'string' &&
                 currentTrack?.artwork.includes('http')
-                  ? {uri: `${currentTrack?.artwork}`}
-                  : {uri: `${currentTrack?.artwork?.uri}`}
+                ? {uri: `${currentTrack?.artwork}`}
+                : {uri: `${currentTrack?.artwork?.uri}`}
               }
-            />
+              />
           </Animated.View>
           <Animated.View style={styles.animatedTitleContainer}>
             <View style={styles.titleView}>
@@ -129,26 +132,26 @@ const RCTrackPlayer = ({
             <View style={{marginTop: 0, ...styles.buttonContainer}}>
               {playBackState === State.Connecting ? (
                 <ActivityIndicator
-                  style={styles.iconStyle}
-                  color={'black'}
-                  size={'large'}
+                style={styles.iconStyle}
+                color={'black'}
+                size={'large'}
                 />
-              ) : (
-                <Icon
+                ) : (
+                  <Icon
                   onPress={() => playBackStateToggling()}
                   iconStyle={styles.iconStyle}
                   icon={
                     playBackState !== State.Playing
-                      ? playButtonIcon
-                      : pauseButtonIcon
+                    ? playButtonIcon
+                    : pauseButtonIcon
                   }
-                />
-              )}
+                  />
+                  )}
               <Icon
                 icon={skipToNextIcon}
                 onPress={() => NextTrack(setTrack)}
                 iconStyle={styles.skipToNextIconStyle}
-              />
+                />
             </View>
           </Animated.View>
         </Animated.View>
@@ -168,8 +171,9 @@ const RCTrackPlayer = ({
             pauseButtonIcon={pauseButtonIcon}
             playButtonIcon={playButtonIcon}
             skipToNextIcon={skipToNextIcon}
-          />
+            />
         </Animated.View>
+            </LinearGradient>  
       </Animated.View>
     </Animated.View>
   );

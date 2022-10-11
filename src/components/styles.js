@@ -59,10 +59,10 @@ export const styles = StyleSheet.create({
     fontSize: normalize(22),
     letterSpacing: normalize(0.5),
     marginTop: vh(30),
-    marginBottom: vh(5)
+    marginBottom: vh(5),
   },
 
-  artistStyle:{
+  artistStyle: {
     color: 'grey',
     fontWeight: '600',
     fontWeight: '300',
@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'red',
   },
-  
+
   animatedTransform: {
     left: 0,
     right: 0,
@@ -81,9 +81,8 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     height: SCREEN_HEIGHT,
     backgroundColor: 'white',
-    paddingHorizontal: normalize(13),
   },
-
+  gredientView: {flex: 1, paddingHorizontal: vw(10)},
   animatedBottomTrack: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -101,7 +100,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'red',
-    borderRadius: vh(5)
+    borderRadius: vh(5),
   },
 
   animatedTitleContainer: {
