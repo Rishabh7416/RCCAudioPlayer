@@ -1,5 +1,6 @@
 import TrackPlayer, {
   Capability,
+  RepeatMode,
   State,
   usePlaybackState,
 } from 'react-native-track-player';
@@ -27,7 +28,6 @@ export const playBackStateToggling = async () => {
     console.log('Playing')
     const trackState = await TrackPlayer.getState();
     if (trackState != State.Playing) TrackPlayer.play();
-    else if (trackState == State.Buffering) alert('buffering');
     else TrackPlayer.pause();
   } catch (error) {
     console.log('check your playBackStateToggling function');
@@ -158,4 +158,20 @@ export const getCurrentTrack = async (callback, trackIndex) => {
   }
 };
 
+export const repeatTrack=async()=>{
+  try{
+    TrackPlayer.setRepeatMode(RepeatMode.Track)
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+export const repeatQueue=async()=>{
+  try{
+    TrackPlayer.setRepeatMode(RepeatMode.Queue)
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 export const errorHandling = () => {};

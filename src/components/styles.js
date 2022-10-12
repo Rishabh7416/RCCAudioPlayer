@@ -11,37 +11,45 @@ export const styles = StyleSheet.create({
   main: {flex: 1},
 
   buttonContainer: {
-    width: '55%',
-    alignSelf: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    width:SCREEN_WIDTH-20,
+    
   },
-
+  centerBtn:{
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginLeft:vw(40)
+    
+  },
   iconStyle: {
     width: vh(40),
     height: vh(40),
-    marginHorizontal: vw(20),
+    marginHorizontal:vw(20),
   },
 
   playButtonIconStyle: {
     width: vw(56),
     height: vw(56),
-    marginHorizontal: vw(20),
+    marginHorizontal: vw(25),
   },
 
-  pauseButtonIconStyle: {
-    width: vw(56),
-    height: vw(56),
-    backgroundColor: 'green',
-    marginHorizontal: vw(20),
-  },
+ 
 
   skipToNextIconStyle: {
     width: vw(24),
     height: vw(24),
   },
-
+repeatIconStyle:{
+  width: vw(34),
+  height: vw(34),
+  marginLeft:vw(25)
+},
+likeIconStyle:{
+  width: vw(38),
+  height: vw(38),
+  marginLeft:vw(35)
+},
   skipToPreviousIconStyle: {
     width: vw(24),
     height: vw(24),
@@ -80,7 +88,6 @@ export const styles = StyleSheet.create({
     zIndex: 10,
     position: 'absolute',
     height: SCREEN_HEIGHT,
-    backgroundColor: 'white',
   },
   gredientView: {flex: 1, paddingHorizontal: vw(10)},
   animatedBottomTrack: {

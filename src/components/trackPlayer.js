@@ -28,6 +28,8 @@ import {
 } from '../constants/animation';
 import {LocalImages} from '../assets/images/localimages';
 import {State, usePlaybackState} from 'react-native-track-player';
+import LinearGradient from 'react-native-linear-gradient';
+import { SCREEN_HEIGHT } from '../constants/dimensions';
 
 const RCTrackPlayer = ({
   songLists,
@@ -35,6 +37,7 @@ const RCTrackPlayer = ({
   titleViewStyle,
   skipToNextIcon,
   pauseButtonIcon,
+  gradientColor,
   skipToPreviousIcon,
   animatedTitleTxtStyle,
   animatedContainerStyle,
@@ -80,12 +83,15 @@ const RCTrackPlayer = ({
     animatedBottomTrackContainer_key: animatedBottomTrackContainerStyle
       ? animatedBottomTrackContainerStyle
       : styles.animatedBottomTrackContainer,
+     gradientColor:gradientColor?gradientColor:['#EDE4E0', '#98A8F8'],
   };
 
   const playBackState = usePlaybackState();
   const [currentHeight, setHeight] = React.useState(0);
+
   const [currentTrack, setCurrentTrack] = React.useState(null);
   const animation = React.useRef(new Animated.ValueXY({x: 0, y: 0})).current;
+ 
   const onLayout = event => {
     const {x, y, height, width} = event.nativeEvent.layout;
     setHeight(height);
@@ -125,12 +131,15 @@ const RCTrackPlayer = ({
   return (
     <Animated.View style={propHandler.animatedContainerStyle_key}>
       <Animated.View
-        onLayout={onLayout}
+      onLayout={onLayout}
         style={[
           styles.animatedTransform,
           {height: _animatedScreenHeight(animation)},
         ]}
         {...panResponder.panHandlers}>
+
+       <LinearGradient colors={propHandler.gradientColor} style={styles.gredientView}>
+          
         <Animated.View style={propHandler.animatedBottomTrack_key}>
           <Animated.View
             style={[
@@ -168,7 +177,7 @@ const RCTrackPlayer = ({
                 ({currentTrack?.artist})
               </Animated.Text>
             </View>
-            <View style={{marginTop: 0, ...styles.buttonContainer}}>
+            <View style={styles.buttonContainer}>
               {playBackState === State.Connecting ? (
                 <ActivityIndicator
                   size={'large'}
@@ -200,8 +209,8 @@ const RCTrackPlayer = ({
           <SliderComp
             step={1}
             minimumValue={0}
-            maximumTrackTintColor="grey"
-            minimumTrackTintColor="aqua"
+            maximumTrackTintColor="lightgrey"
+            minimumTrackTintColor="grey"
             scrollNext={() => NextTrack(setTrack)}
             scrollPrevious={() => PerviousTrack(setTrack)}
             onSlidingComplete={value => seekToTrack(value)}
@@ -211,7 +220,7 @@ const RCTrackPlayer = ({
             skipToPreviousIcon={propHandler.skipToPreviousIcon_key}
           />
         </Animated.View>
-           
+        </LinearGradient> 
       </Animated.View>
     </Animated.View>
   );

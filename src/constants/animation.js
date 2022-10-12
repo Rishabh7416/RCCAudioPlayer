@@ -78,11 +78,13 @@ export const _panResponderHandlerFuncton = (dy, animation) => {
     Animated.timing(animation.y, {
       toValue: 0,
       duration: 500,
+      // useNativeDriver:true
     }).start();
   } else if (dy > 0) {
     Animated.timing(animation.y, {
       toValue: 900,
       duration: 500,
+      // useNativeDriver:true
     }).start();
   }
 };
