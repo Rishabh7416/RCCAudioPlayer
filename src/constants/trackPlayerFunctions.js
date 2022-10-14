@@ -2,9 +2,12 @@ import TrackPlayer, {
   Capability,
   RepeatMode,
   State,
-  usePlaybackState,
 } from 'react-native-track-player';
 
+/**
+ * 
+ * @param {*} songLists 
+ */
 export const trackPlayerSetup = async songLists => {
   try {
     await TrackPlayer.setupPlayer();
@@ -23,6 +26,9 @@ export const trackPlayerSetup = async songLists => {
   }
 };
 
+/**
+ * Handling the state for the toggling
+ */
 export const playBackStateToggling = async () => {
   try {
     console.log('Playing')
@@ -34,6 +40,10 @@ export const playBackStateToggling = async () => {
   }
 };
 
+/**
+ * 
+ * @param {*} value 
+ */
 export const seekToTrack = async value => {
   try {
     await TrackPlayer.seekTo(value);
@@ -42,6 +52,10 @@ export const seekToTrack = async value => {
   }
 };
 
+/**
+ * 
+ * @param {*} trackIndex 
+ */
 export const skipToNextPreviousTrack = async trackIndex => {
   try {
     await TrackPlayer.skip(trackIndex);
@@ -50,6 +64,12 @@ export const skipToNextPreviousTrack = async trackIndex => {
   }
 };
 
+/**
+ * 
+ * @param {*} trackTime 
+ * @param {*} conditionalValues 
+ * @returns 
+ */
 export const formatTime = (trackTime, conditionalValues) => {
   var timeInMin = Math.floor(trackTime / 59);
   var timeInSec =
@@ -71,9 +91,11 @@ export const formatTime = (trackTime, conditionalValues) => {
   return result;
 };
 
+/**
+ * Play track
+ */
 export const PlayTrack = async () => {
   try {
-    console.log('playasd-<>>>>>>><<<>>')
     await TrackPlayer.play();
   } catch (err) {
     console.log(err);
@@ -88,6 +110,11 @@ export const PauseTrack = async () => {
   }
 };
 
+/**
+ * 
+ * @param {*} index 
+ * @param {*} callback 
+ */
 export const SkipTo = async (index, callback) => {
   try {
     await TrackPlayer.skip(index, 0);
@@ -97,6 +124,10 @@ export const SkipTo = async (index, callback) => {
   }
 };
 
+/**
+ * 
+ * @param {*} callback 
+ */
 export const NextTrack = async callback => {
   try {
     await TrackPlayer.skipToNext();
@@ -105,6 +136,11 @@ export const NextTrack = async callback => {
     console.log(err);
   }
 };
+
+/**
+ * 
+ * @param {*} callback 
+ */
 export const PerviousTrack = async (callback) => {
   try {
     await TrackPlayer.skipToPrevious();
@@ -113,6 +149,11 @@ export const PerviousTrack = async (callback) => {
     console.log(err);
   }
 };
+
+/**
+ * 
+ * @param {*} time 
+ */
 export const SeekTo = async time => {
   try {
     await TrackPlayer.seekTo(time);
@@ -120,6 +161,7 @@ export const SeekTo = async time => {
     console.log(err);
   }
 };
+
 
 export const getState = async () => {
   try {
@@ -130,6 +172,10 @@ export const getState = async () => {
   }
 };
 
+/**
+ * 
+ * @param {*} callback 
+ */
 export const getCurrentQueue = async callback => {
   try {
     const queue = await TrackPlayer.getQueue();
@@ -139,6 +185,11 @@ export const getCurrentQueue = async callback => {
     console.log(err);
   }
 };
+
+/**
+ * 
+ * @param {*} callback 
+ */
 export const getCurrentTrackIndex = async callback => {
   try {
     const currentTrackIndex = await TrackPlayer.getCurrentTrack();
@@ -148,10 +199,15 @@ export const getCurrentTrackIndex = async callback => {
   }
 };
 
+/**
+ * 
+ * @param {*} callback 
+ * @param {*} trackIndex 
+ */
 export const getCurrentTrack = async (callback, trackIndex) => {
   try {
     const track = await TrackPlayer.getTrack(trackIndex);
-
+    console.log(track)
     callback(track);
   } catch (err) {
     console.log(err);
@@ -166,6 +222,7 @@ export const repeatTrack=async()=>{
     console.log(err);
   }
 }
+
 export const repeatQueue=async()=>{
   try{
     TrackPlayer.setRepeatMode(RepeatMode.Queue)
