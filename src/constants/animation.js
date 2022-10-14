@@ -5,8 +5,8 @@ const {StatusBarManager} = NativeModules;
 
 export const _animatedScreenHeight = animation => {
   const animatedScreenHeight = animation.y.interpolate({
-    inputRange: [0, SCREEN_HEIGHT],
-    outputRange: [SCREEN_HEIGHT - vh(StatusBarManager.HEIGHT), normalize(100)],
+    inputRange: [0,SCREEN_HEIGHT],
+    outputRange: [SCREEN_HEIGHT - vh(StatusBarManager.HEIGHT),normalize(70)],
     extrapolate: 'clamp',
   });
 
@@ -78,11 +78,13 @@ export const _panResponderHandlerFuncton = (dy, animation) => {
     Animated.timing(animation.y, {
       toValue: 0,
       duration: 500,
+      // useNativeDriver:true
     }).start();
   } else if (dy > 0) {
     Animated.timing(animation.y, {
       toValue: 900,
       duration: 500,
+      // useNativeDriver:true
     }).start();
   }
 };

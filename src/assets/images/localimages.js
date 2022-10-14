@@ -7,4 +7,9 @@ export const LocalImages = {
   repeatOnceIcon: require('../images/icons/repeatOnce.png'),
   playButtonIcon: require('../images/icons/play-button.png'),
   skipToPreviousIcon: require('../images/icons/backward-track.png'),
+  repeat:require('../images/icons/repeat-90.png'),
+  repeatAll:require('../images/icons/all-repeat-90.png'),
+  repeatOne:require('../images/icons/repeat-one-90.png'),
+  heart:require('../images/icons/heart-100.png'),
+  blueHeart:require('../images/icons/heart-80.png')
 };

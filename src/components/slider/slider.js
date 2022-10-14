@@ -6,9 +6,10 @@ import {
   playBackStateToggling,
 } from '../../constants/trackPlayerFunctions';
 import Slider from '@react-native-community/slider';
-import {normalize, vh, vw} from '../../constants/dimensions';
+import {normalize, SCREEN_WIDTH, vh, vw} from '../../constants/dimensions';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {State, usePlaybackState, useProgress} from 'react-native-track-player';
+import { LocalImages } from '../../assets/images/localimages';
 
 export const SliderComp = ({
   step,
@@ -26,7 +27,6 @@ export const SliderComp = ({
   const progress = useProgress();
   const playBackState = usePlaybackState();
   const [timing, setTiming] = React.useState(0);
-
   return (
     <View style={stylesA.mainSlider}>
       <Slider
@@ -46,37 +46,53 @@ export const SliderComp = ({
           {formatTime(progress.position, true)}
         </Text>
         <Text style={stylesA.durationStyle}>
-          {`${formatTime(progress.duration - timing, false)}`}
+          {`${formatTime(progress.duration - progress.position, false)}`}
         </Text>
       </View>
+
       <View style={styles.buttonContainer}>
         <Icon
-          icon={skipToPreviousIcon}
-          onPress={() => scrollPrevious()}
-          containerStyle={{alignItems: 'center'}}
-          iconStyle={styles.skipToPreviousIconStyle}
-        />
-        {playBackState === State.Connecting ? (
-          <ActivityIndicator
-            color={'black'}
-            size={'large'}
-            style={stylesA.bufferIcon}
-          />
-        ) : (
-          <Icon
-            onPress={() => playBackStateToggling()}
-            iconStyle={styles.playButtonIconStyle}
-            containerStyle={{alignItems: 'center'}}
-            icon={
-              playBackState !== State.Playing ? playButtonIcon : pauseButtonIcon
-            }
-          />
-        )}
-        <Icon
-          icon={skipToNextIcon}
+          icon={LocalImages.repeat}
           onPress={() => scrollNext()}
-          iconStyle={styles.skipToNextIconStyle}
-          containerStyle={{alignItems: 'center'}}
+          iconStyle={styles.repeatIconStyle}
+        />
+        <View style={styles.centerBtn}>
+          <Icon
+            icon={skipToPreviousIcon}
+            onPress={() => scrollPrevious()}
+            containerStyle={{alignItems: 'center'}}
+            iconStyle={styles.skipToPreviousIconStyle}
+          />
+          {playBackState === State.Connecting ? (
+            <ActivityIndicator
+              color={'black'}
+              size={'large'}
+              style={styles.playButtonIconStyle}
+            />
+          ) : (
+            <Icon
+              onPress={() => playBackStateToggling()}
+              iconStyle={styles.playButtonIconStyle}
+              containerStyle={{alignItems: 'center'}}
+              icon={
+                playBackState !== State.Playing
+                  ? playButtonIcon
+                  : pauseButtonIcon
+              }
+            />
+          )}
+          <Icon
+            icon={skipToNextIcon}
+            onPress={() => scrollNext()}
+            iconStyle={styles.skipToNextIconStyle}
+            containerStyle={{alignItems: 'center'}}
+          />
+        </View>
+
+        <Icon
+          icon={LocalImages.heart}
+          onPress={() => scrollNext()}
+          iconStyle={styles.likeIconStyle}
         />
       </View>
     </View>
@@ -84,7 +100,6 @@ export const SliderComp = ({
 };
 
 const stylesA = StyleSheet.create({
-  mainSlider: {},
 
   titleContainer: {
     flexDirection: 'row',
