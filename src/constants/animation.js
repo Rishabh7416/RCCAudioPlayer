@@ -5,8 +5,8 @@ const {StatusBarManager} = NativeModules;
 
 export const _animatedScreenHeight = animation => {
   const animatedScreenHeight = animation.y.interpolate({
-    inputRange: [0, SCREEN_HEIGHT],
-    outputRange: [SCREEN_HEIGHT - vh(StatusBarManager.HEIGHT), normalize(100)],
+    inputRange: [0,SCREEN_HEIGHT],
+    outputRange: [SCREEN_HEIGHT - vh(StatusBarManager.HEIGHT),normalize(70)],
     extrapolate: 'clamp',
   });
 

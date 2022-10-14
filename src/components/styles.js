@@ -87,7 +87,6 @@ likeIconStyle:{
     bottom: 0,
     zIndex: 10,
     position: 'absolute',
-    height: SCREEN_HEIGHT,
   },
   gredientView: {flex: 1, paddingHorizontal: vw(10)},
   animatedBottomTrack: {

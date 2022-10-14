@@ -118,7 +118,7 @@ const RCTrackPlayer = ({
       onPanResponderGrant: () => {
         animation.extractOffset();
       },
-      onPanResponderMove: (eve, gestureState) => {
+      onPanResponderMove:(eve, gestureState) => {
         animation.y.setValue(gestureState.dy);
       },
       onPanResponderRelease: (eve, gestureState) => {
